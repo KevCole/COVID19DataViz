@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Covid-19-data
+
+  Sample SAM Template for Covid-19-data
+
+Resources:
+  COVIDTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "Date"
+          AttributeType: "S"
+
+      KeySchema:
+        -
+          AttributeName: "Date"
+          KeyType: "HASH"
+      BillingMode: PAY_PER_REQUEST
+      TableName: "Covid19Table"
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/
+      Policies: AmazonDynamoDBFullAccess
+      Handler: app.add_covid_data
+      Runtime: python3.8
+      Events:
+        COVIDSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(50 03 * * ? *)
+            Name: GetCovidData
+            Description: Testing
+            Enabled: True
