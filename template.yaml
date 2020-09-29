@@ -26,7 +26,7 @@ Resources:
     Properties:
       CodeUri: hello_world/
       Policies: AmazonDynamoDBFullAccess
-      Handler: app.add_covid_data
+      Handler: dataLoad.add_covid_data
       Runtime: python3.8
       Events:
         COVIDSchedule:
@@ -36,3 +36,10 @@ Resources:
             Name: GetCovidData
             Description: Testing
             Enabled: True
+  CovidSNSSubscription:
+    Type : AWS::SNS::Subscription
+    Properties:
+      Endpoint: Kev.sns.test@gmail.com
+      Protocol: email
+      TopicArn: arn:aws:sns:us-east-1:135017628079:Covid19topic
+
